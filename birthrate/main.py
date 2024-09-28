@@ -36,10 +36,10 @@ def write_birthrate_list_to_db(data_list, connection):
       insert_query = """
         INSERT IGNORE INTO birthrate (
           id,
+          rate,
           year,
           area_code,
-          area,
-          rate
+          area
         ) VALUES (
           %s, %s, %s, %s, %s
         )
@@ -75,13 +75,13 @@ if ret['returncode'] == 200:
     )
     area = area_info['name']
     birthrate_list.append(
-      {
-        'id': year,
-        'rate': rate,
-        'year': year,
-        'area_code': area_code,
-        'area': area,
-      }
+      [
+        str(year) + '_' + area_code,
+        rate,
+        year,
+        area_code,
+        area,
+      ]
     )
   print(birthrate_list)
   write_birthrate_list_to_db(birthrate_list, connection)
